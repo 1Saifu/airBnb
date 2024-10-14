@@ -1,0 +1,48 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String @unique
+  password  String
+  isAdmin   Boolean
+}
+
+model Property {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  location     String
+  pricePerNight Float
+  availability Boolean
+  createdBy    User   @relation(fields: [createdById], references: [id])
+  createdById  String @db.ObjectId
+}
+
+model Booking {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdDate     DateTime @default(now())
+  checkinDate     DateTime
+  checkoutDate    DateTime
+  totalPrice      Float
+  customer        Customer
+  property        Property @relation(fields: [propertyId], references: [id])
+  propertyId      String   @db.ObjectId
+  createdBy       User     @relation(fields: [createdById], references: [id])
+  createdById     String   @db.ObjectId
+}
+
+// Embedded document for customer details
+type Customer {
+  firstName String
+  lastName  String
+  phone     String
+  email     String
+}
