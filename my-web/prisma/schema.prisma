@@ -8,22 +8,25 @@ generator client {
 }
 
 model User {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  email     String @unique
+  email     String   @unique
   password  String
-  isAdmin   Boolean
+  isAdmin   Boolean  @default(false)  // Default value for admin status
+  properties Property[]
+  bookings   Booking[]
 }
 
 model Property {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   description  String
   location     String
   pricePerNight Float
   availability Boolean
-  createdBy    User   @relation(fields: [createdById], references: [id])
-  createdById  String @db.ObjectId
+  createdBy    User     @relation(fields: [createdById], references: [id])
+  createdById  String   @db.ObjectId
+  bookings     Booking[]
 }
 
 model Booking {
@@ -32,17 +35,19 @@ model Booking {
   checkinDate     DateTime
   checkoutDate    DateTime
   totalPrice      Float
-  customer        Customer
+  customerId      String   @db.ObjectId
+  customer        Customer @relation(fields: [customerId], references: [id])
   property        Property @relation(fields: [propertyId], references: [id])
   propertyId      String   @db.ObjectId
   createdBy       User     @relation(fields: [createdById], references: [id])
   createdById     String   @db.ObjectId
 }
 
-// Embedded document for customer details
-type Customer {
+model Customer {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
   lastName  String
   phone     String
   email     String
+  bookings  Booking[] @relation("BookingCustomer")
 }
