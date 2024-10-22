@@ -14,6 +14,9 @@ export function userRegistrationValidator(
   if (!data.name) {
     errors.name = "Name is required";
   }
+  if (data.isAdmin !== undefined && typeof data.isAdmin !== 'boolean') {
+    errors.isAdmin = "isAdmin must be a boolean value";
+  }
   const hasErrors = Object.keys(errors).length !== 0;
 
   return [hasErrors, errors];
@@ -25,7 +28,6 @@ export function userLoginValidator(
   let errors: ErrorObject = {};
   if (!data.email) {
     errors.email = "Email is required";
-
   }
   if (!data.password) {
     errors.password = "Password is required";
@@ -41,7 +43,6 @@ export function userResetPasswordValidator(
   let errors: ErrorObject = {};
   if (!data.email) {
     errors.email = "Email is required";
-
   }
   if (!data.newPassword) {
     errors.newPassword = "New password is required";

@@ -12,6 +12,8 @@ if (!secret) {
 }
 
 
+console.log("JWT_SECRET loaded:", secret);
+
 const encodedSecret = new TextEncoder().encode(secret);
 
 export async function signJWT(payload: JWTUserPayload): Promise<string> {

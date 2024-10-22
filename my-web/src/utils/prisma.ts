@@ -1,11 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 
-// This checks if a user exists in the database
-export async function userExists(email: string, client: PrismaClient): Promise<boolean> {
-    const user = await client.user.findFirst({
+const prisma = new PrismaClient(); 
+
+
+export async function userExists(email: string): Promise<boolean> {
+    const user = await prisma.user.findFirst({
         where: {
-            email: email
-        }
-    })
-    return !!user
+            email: email,
+        },
+    });
+    return !!user;
 }
+
+
+export default prisma;

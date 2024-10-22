@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyJWT } from "./utils/jwt";
 
 const UNSAFE_METHODS = ["POST", "PUT", "PATCH", "DELETE"];
-const PROTECTED_ROUTES = ["/api/bookings/", "/api/bookings/[id]", "/api/properties/", "/api/properties/[id]"]; // Protect these routes
+const PROTECTED_ROUTES = ["/api/bookings/", "/api/bookings/[id]", "/api/properties/", "/api/properties/[id]"]; 
 
 export async function middleware(request: NextRequest) {
   const url = new URL(request.url);
@@ -26,16 +26,15 @@ export async function middleware(request: NextRequest) {
       }
 
       console.log("Authorization -> token", token);
-      const decryptedToken = await verifyJWT(token); // Verify the token
+      const decryptedToken = await verifyJWT(token);
 
-      // If verification fails
       if (!decryptedToken) {
         throw new Error("No token payload");
       }
 
       console.log("Authorization -> decrypted", decryptedToken);
       const headers = new Headers(request.headers);
-      headers.set("userId", decryptedToken.userId); // Pass the userId from the token
+      headers.set("userId", decryptedToken.userId); 
 
       return NextResponse.next({
         headers,
@@ -54,12 +53,12 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Configure paths for middleware
+
 export const config = {
   matcher: [
-    "/api/bookings",          // Protect the main bookings route
-    "/api/bookings/[id]",     // Protect individual booking routes
-    "/api/properties",        // Protect the main properties route
-    "/api/properties/[id]",    // Protect individual property routes
+    "/api/bookings",        
+    "/api/bookings/[id]",    
+    "/api/properties",        
+    "/api/properties/[id]",    
   ],
 };

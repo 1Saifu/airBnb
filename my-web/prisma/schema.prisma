@@ -1,21 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model User {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  email              String   @unique
+  password           String
+  isAdmin            Boolean  @default(false)
+  passwordResetUUID  String?  @unique // Marking this as unique
+  properties         Property[]
+  bookings           Booking[]
 }
 
-model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String   @unique
-  password  String
-  isAdmin   Boolean  @default(false)  // Default value for admin status
-  properties Property[]
-  bookings   Booking[]
-}
 
 model Property {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -36,7 +38,7 @@ model Booking {
   checkoutDate    DateTime
   totalPrice      Float
   customerId      String   @db.ObjectId
-  customer        Customer @relation(fields: [customerId], references: [id])
+  customer        Customer @relation("CustomerBookings", fields: [customerId], references: [id])
   property        Property @relation(fields: [propertyId], references: [id])
   propertyId      String   @db.ObjectId
   createdBy       User     @relation(fields: [createdById], references: [id])
@@ -49,5 +51,5 @@ model Customer {
   lastName  String
   phone     String
   email     String
-  bookings  Booking[] @relation("BookingCustomer")
+  bookings  Booking[] @relation("CustomerBookings") 
 }

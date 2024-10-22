@@ -1,7 +1,8 @@
 import { User } from "@prisma/client";
 
-
-export type UserRegistrationData = Omit<User, "id" | "createdAt" | "updatedAt">;
+export type UserRegistrationData = Omit<User, "id" | "createdAt" | "updatedAt"> & {
+  isAdmin?: boolean;  
+};
 
 export type UserLoginData = Omit<User, "id" | "createdAt" | "updatedAt" | "name">;
 
