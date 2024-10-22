@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { PropertyUpdateData } from "../../../../types/property"; 
+import { validatePropertyUpdateData } from "../../../../utils/validators/propertyValidator"; 
 
 const prisma = new PrismaClient();
 
@@ -31,11 +33,12 @@ export async function DELETE(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
     const id = request.url.split("/").pop();
     try {
-        const data = await request.json();
+        const data: PropertyUpdateData = await request.json();
+        validatePropertyUpdateData(data); 
         const updatedProperty = await prisma.property.update({ where: { id }, data });
         return NextResponse.json(updatedProperty);
     } catch (error: any) {
         console.error("Error updating property:", error.message);
-        return NextResponse.json({ message: "Error updating property" }, { status: 500 });
+        return NextResponse.json({ message: error.message }, { status: 400 });
     }
 }

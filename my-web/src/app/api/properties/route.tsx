@@ -1,5 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+import { PropertyCreateData } from "../../../types/property"; 
+import { validatePropertyCreateData } from "../../../utils/validators/propertyValidator"; 
 
 const prisma = new PrismaClient();
 
@@ -15,11 +17,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
     try {
-        const data = await request.json();
+        const data: PropertyCreateData = await request.json();
+        validatePropertyCreateData(data); 
         const newProperty = await prisma.property.create({ data });
         return NextResponse.json(newProperty, { status: 201 });
     } catch (error: any) {
         console.error("Error creating property:", error.message);
-        return NextResponse.json({ message: "Error creating property" }, { status: 500 });
+        return NextResponse.json({ message: error.message }, { status: 400 });
     }
 }

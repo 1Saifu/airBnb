@@ -37,12 +37,12 @@ model Booking {
   checkinDate     DateTime
   checkoutDate    DateTime
   totalPrice      Float
-  customerId      String   @db.ObjectId
-  customer        Customer @relation("CustomerBookings", fields: [customerId], references: [id])
-  property        Property @relation(fields: [propertyId], references: [id])
+  customerId      String   @db.ObjectId // Foreign key to Customer
+  customer        Customer @relation("CustomerBookings", fields: [customerId], references: [id]) // Link to Customer with a relation name
   propertyId      String   @db.ObjectId
-  createdBy       User     @relation(fields: [createdById], references: [id])
+  property        Property @relation(fields: [propertyId], references: [id])
   createdById     String   @db.ObjectId
+  createdBy       User     @relation(fields: [createdById], references: [id])
 }
 
 model Customer {
@@ -51,5 +51,6 @@ model Customer {
   lastName  String
   phone     String
   email     String
-  bookings  Booking[] @relation("CustomerBookings") 
+  bookings  Booking[] @relation("CustomerBookings") // Specify relation name for bookings
 }
+

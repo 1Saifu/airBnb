@@ -20,6 +20,11 @@ export async function GET(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
     const id = request.url.split("/").pop();
     try {
+        const booking = await prisma.booking.findUnique({ where: { id } });
+        if (!booking) {
+            return NextResponse.json({ message: "Booking not found" }, { status: 404 });
+        }
+        
         await prisma.booking.delete({ where: { id } });
         return NextResponse.json({ message: "Booking deleted successfully" });
     } catch (error: any) {
@@ -31,6 +36,11 @@ export async function DELETE(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
     const id = request.url.split("/").pop();
     try {
+        const booking = await prisma.booking.findUnique({ where: { id } });
+        if (!booking) {
+            return NextResponse.json({ message: "Booking not found" }, { status: 404 });
+        }
+
         const data = await request.json();
         const updatedBooking = await prisma.booking.update({ where: { id }, data });
         return NextResponse.json(updatedBooking);

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { validateBookingData } from "../../../utils/validators/bookingValidator";
+import { BookingData } from "../../../types/booking";
 
 const prisma = new PrismaClient();
 
@@ -15,30 +17,29 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
     try {
-        const { propertyId, checkinDate, checkoutDate, customer } = await request.json();
+        const data: BookingData = await request.json();
+
+        const [hasErrors, errors] = validateBookingData(data);
+        if (hasErrors) {
+            return NextResponse.json(errors, { status: 400 });
+        }
+
+        const { propertyId, checkinDate, checkoutDate, customer } = data;
         const property = await prisma.property.findUnique({ where: { id: propertyId } });
         if (!property) {
             return NextResponse.json({ message: "Property not found" }, { status: 404 });
         }
 
-        const checkin = new Date(checkinDate);
-        const checkout = new Date(checkoutDate);
-        const numberOfNights = (checkout.getTime() - checkin.getTime()) / (1000 * 3600 * 24);
-
-        if (numberOfNights <= 0) {
-            return NextResponse.json({ message: "Invalid check-in and check-out dates" }, { status: 400 });
-        }
-
-        const totalPrice = numberOfNights * property.pricePerNight;
+        const totalPrice = (new Date(checkoutDate).getTime() - new Date(checkinDate).getTime()) / (1000 * 3600 * 24) * property.pricePerNight;
 
         const newBooking = await prisma.booking.create({
             data: {
-                checkinDate: checkin,
-                checkoutDate: checkout,
+                checkinDate: new Date(checkinDate),
+                checkoutDate: new Date(checkoutDate),
                 totalPrice,
-                customer,
+                customerId: customer.id, 
                 propertyId,
-                createdById: customer.createdById,
+                createdById: customer.createdById, 
             },
         });
 
