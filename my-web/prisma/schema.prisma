@@ -13,7 +13,7 @@ model User {
   email              String   @unique
   password           String
   isAdmin            Boolean  @default(false)
-  passwordResetUUID  String?  @unique // Marking this as unique
+  passwordResetUUID  String?  @unique 
   properties         Property[]
   bookings           Booking[]
 }
@@ -37,20 +37,14 @@ model Booking {
   checkinDate     DateTime
   checkoutDate    DateTime
   totalPrice      Float
-  customerId      String   @db.ObjectId // Foreign key to Customer
-  customer        Customer @relation("CustomerBookings", fields: [customerId], references: [id]) // Link to Customer with a relation name
+  firstName       String
+  lastName        String
+  phone           String
+  email           String
   propertyId      String   @db.ObjectId
   property        Property @relation(fields: [propertyId], references: [id])
   createdById     String   @db.ObjectId
   createdBy       User     @relation(fields: [createdById], references: [id])
 }
 
-model Customer {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  firstName String
-  lastName  String
-  phone     String
-  email     String
-  bookings  Booking[] @relation("CustomerBookings") // Specify relation name for bookings
-}
 
