@@ -26,6 +26,7 @@ model Property {
   location     String
   pricePerNight Float
   availability Boolean
+  imageURL     String?
   createdBy    User     @relation(fields: [createdById], references: [id])
   createdById  String   @db.ObjectId
   bookings     Booking[]

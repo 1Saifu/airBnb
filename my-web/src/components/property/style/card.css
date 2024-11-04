@@ -1,0 +1,105 @@
+.property-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+.property-card {
+    width: 300px; 
+    height: 200px; 
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    color: white;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.property-card:hover {
+    transform: scale(1.05);
+}
+
+.property-info {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+
+.modal {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    animation: fade-in 0.3s forwards;
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 50px;
+}
+
+.close {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.edit-button, .delete-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.edit-button {
+    background-color: white;
+    border: 1px solid gray;
+    color: gray;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+    margin-left: 10px;
+}
+
+.edit-button:hover {
+    background-color: gray;
+    transform: scale(1.05);
+}
+
+.delete-button:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+}
