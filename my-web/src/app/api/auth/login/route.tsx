@@ -26,8 +26,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Password mismatch" }, { status: 400 });
     }
 
-    const token = await signJWT({ userId: user.id });
-    return NextResponse.json({ token }, { status: 200 });
+    const token = await signJWT({ userId: user.id, isAdmin: user.isAdmin });
+
+    return NextResponse.json({ token, userId: user.id, isAdmin: user.isAdmin }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: "User matching credentials not found" }, { status: 404 });
   }

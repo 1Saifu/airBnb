@@ -5,8 +5,18 @@ import { validatePropertyUpdateData } from "../../../../utils/validators/propert
 
 const prisma = new PrismaClient();
 
+async function getIdFromRequest(request: NextRequest) {
+    const url = new URL(request.url);
+    const id = url.pathname.split("/").pop();
+    return id;
+}
+
 export async function GET(request: NextRequest) {
-    const id = request.url.split("/").pop();
+    const id = await getIdFromRequest(request);
+    if (!id) {
+        return NextResponse.json({ message: "Property ID is required" }, { status: 400 });
+    }
+
     try {
         const property = await prisma.property.findUnique({ where: { id } });
         if (!property) {
@@ -20,7 +30,11 @@ export async function GET(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-    const id = request.url.split("/").pop();
+    const id = await getIdFromRequest(request);
+    if (!id) {
+        return NextResponse.json({ message: "Property ID is required" }, { status: 400 });
+    }
+
     try {
         await prisma.property.delete({ where: { id } });
         return NextResponse.json({ message: "Property deleted successfully" });
@@ -31,11 +45,21 @@ export async function DELETE(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-    const id = request.url.split("/").pop();
+    const id = await getIdFromRequest(request);
+    if (!id) {
+        return NextResponse.json({ message: "Property ID is required" }, { status: 400 });
+    }
+
     try {
         const data: PropertyUpdateData = await request.json();
+        console.log("Received data for update:", data);
         validatePropertyUpdateData(data); 
-        const updatedProperty = await prisma.property.update({ where: { id }, data });
+        
+        const updatedProperty = await prisma.property.update({
+            where: { id },
+            data
+        });
+        
         return NextResponse.json(updatedProperty);
     } catch (error: any) {
         console.error("Error updating property:", error.message);

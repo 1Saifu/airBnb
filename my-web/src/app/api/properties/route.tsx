@@ -19,10 +19,22 @@ export async function POST(request: NextRequest) {
     try {
         const data: PropertyCreateData = await request.json();
         validatePropertyCreateData(data); 
-        const newProperty = await prisma.property.create({ data });
+        
+        const createdById = data.createdById; 
+        if (!createdById) {
+            throw new Error("User ID is required to create a property.");
+        }
+        
+        const newProperty = await prisma.property.create({
+            data: {
+                ...data,
+                createdById: createdById, 
+            }
+        });
         return NextResponse.json(newProperty, { status: 201 });
     } catch (error: any) {
         console.error("Error creating property:", error.message);
         return NextResponse.json({ message: error.message }, { status: 400 });
     }
 }
+

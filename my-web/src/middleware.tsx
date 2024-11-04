@@ -32,6 +32,8 @@ export async function middleware(request: NextRequest) {
         throw new Error("No token payload");
       }
 
+      console.log("Decrypted token:", decryptedToken);
+
       console.log("Authorization -> decrypted", decryptedToken);
       const headers = new Headers(request.headers);
       headers.set("userId", decryptedToken.userId); 

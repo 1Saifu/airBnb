@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(errors, { status: 400 });
         }
 
-        const { propertyId, checkinDate, checkoutDate, customer } = data;
+        const {  propertyId, checkinDate, checkoutDate, firstName, lastName, phone, email  } = data;
         const property = await prisma.property.findUnique({ where: { id: propertyId } });
         if (!property) {
             return NextResponse.json({ message: "Property not found" }, { status: 404 });
@@ -37,9 +37,12 @@ export async function POST(request: NextRequest) {
                 checkinDate: new Date(checkinDate),
                 checkoutDate: new Date(checkoutDate),
                 totalPrice,
-                customerId: customer.id, 
+                firstName,
+                lastName,
+                phone,
+                email,
                 propertyId,
-                createdById: customer.createdById, 
+                createdById: data.createdById,
             },
         });
 

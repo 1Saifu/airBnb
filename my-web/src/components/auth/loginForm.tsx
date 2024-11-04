@@ -24,7 +24,15 @@ const loginForm: React.FC = () => {
 
         if (response.ok) {
             const data = await response.json();
+            console.log('Response Data:', data);
+
                 LocalStorageKit.set('@library/token', data.token);
+                LocalStorageKit.set('@library/userId', data.userId);
+                LocalStorageKit.set('@library/isAdmin', JSON.stringify(data.isAdmin)); 
+
+                console.log('Token stored:', data.token); 
+                console.log('User ID stored:', data.userId);
+                console.log('Admin status stored:', data.isAdmin);
                 router.push('/');
         } else {
             console.error('Login failed');
