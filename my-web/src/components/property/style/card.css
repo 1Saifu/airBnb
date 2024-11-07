@@ -88,6 +88,15 @@
     color: gray;
 }
 
+.book-button {
+    background-color: #1A364C;
+    color: white;
+    margin-top: 10px;
+    width: 180px;
+    height: 70px;
+}
+
+
 .delete-button {
     background-color: #f44336;
     color: white;
@@ -101,5 +110,10 @@
 
 .delete-button:hover {
     background-color: #e53935;
+    transform: scale(1.05);
+}
+
+.book-button:hover {
+    background-color: #0056b3;
     transform: scale(1.05);
 }

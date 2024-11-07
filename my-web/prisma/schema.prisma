@@ -46,6 +46,7 @@ model Booking {
   property        Property @relation(fields: [propertyId], references: [id])
   createdById     String   @db.ObjectId
   createdBy       User     @relation(fields: [createdById], references: [id])
+   customerId      String   @db.ObjectId 
 }
 
 

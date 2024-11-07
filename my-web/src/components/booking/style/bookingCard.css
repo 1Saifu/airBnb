@@ -1,0 +1,108 @@
+.booking-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 20px;
+    width: 250px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.booking-card:hover {
+    transform: scale(1.05);
+}
+
+.booking-card h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.booking-card p {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+.booking-card.open .extra-details {
+    display: block;
+    padding: 10px 0;
+}
+
+.view-details-btn {
+    color: #1A364C;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+    border: none;
+    background: none;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.delete-booking-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px;
+    margin: 20px;
+}
+
+.delete-booking-btn:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+.delete-booking-btn:focus {
+    outline: none;
+}
+
+.delete-booking-btn:active {
+    transform: scale(0.98);
+}
+
+.delete-booking-btn + .view-details-btn {
+    margin-top: 15px;
+}
+
+.edit-booking-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.edit-booking-btn:hover {
+    background-color: gray;
+    transform: scale(1.05);
+}
+

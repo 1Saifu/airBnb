@@ -1,0 +1,11 @@
+.rdrDay {
+    display: inline-flex; 
+    justify-content: center;
+    cursor: pointer;
+    margin: 2px;
+    transition: background-color 0.3s ease; 
+}
+
+.rdrDay:hover {
+    background-color: #e0e0e0;
+}
