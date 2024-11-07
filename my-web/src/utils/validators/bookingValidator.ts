@@ -8,7 +8,7 @@ export function validateBookingData(data: BookingData): [boolean, ErrorObject] {
     errors.propertyId = "Property ID is required.";
   }
 
-  if (!data.customer || !data.customer.id) {
+  if (!data.customerId) { 
     errors.customerId = "Customer ID is required.";
   }
 

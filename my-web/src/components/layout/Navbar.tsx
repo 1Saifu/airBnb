@@ -20,6 +20,7 @@ const Navbar: React.FC = () => {
             <div>
                 <Link href="/">Home</Link>
                 <Link href="/properties">Properties</Link>
+                <Link href="/bookings">bookings</Link>
                 {!token ? (
                     <>
                         <Link href="/login">Login</Link>

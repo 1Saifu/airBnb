@@ -46,8 +46,10 @@ export async function POST(request: NextRequest) {
     
     console.log("User Created:", user);
 
-    const token = await signJWT({ userId: user.id });
-    return NextResponse.json({ token }, { status: 201 });
+    const token = await signJWT({ userId: user.id, isAdmin: user.isAdmin });
+
+     return NextResponse.json({ token, userId: user.id, customerId: user.id, isAdmin: user.isAdmin,  }, { status: 201 });
+
   } catch (error: any) {
     console.error("Registration Error:", error);
     return NextResponse.json({ message: "Registration failed", error: error.message }, { status: 400 });

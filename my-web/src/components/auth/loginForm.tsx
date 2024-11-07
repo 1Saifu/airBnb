@@ -10,6 +10,7 @@ const loginForm: React.FC = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -29,19 +30,23 @@ const loginForm: React.FC = () => {
                 LocalStorageKit.set('@library/token', data.token);
                 LocalStorageKit.set('@library/userId', data.userId);
                 LocalStorageKit.set('@library/isAdmin', JSON.stringify(data.isAdmin)); 
+                LocalStorageKit.set("@library/customerId", data.userId);
 
                 console.log('Token stored:', data.token); 
                 console.log('User ID stored:', data.userId);
                 console.log('Admin status stored:', data.isAdmin);
+                console.log('Customer ID stored:', data.userId);
                 router.push('/');
         } else {
             console.error('Login failed');
+            setErrorMessage('Login failed. Please check your email and password.'); 
         }
     };
 
     return(
         <form onSubmit={handleSubmit} className="form1">
         <h2>Login</h2>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <div>
             <input
                 type="email"

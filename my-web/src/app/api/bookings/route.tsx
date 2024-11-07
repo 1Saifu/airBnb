@@ -18,19 +18,25 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         const data: BookingData = await request.json();
+        console.log("Received booking data:", data);
 
         const [hasErrors, errors] = validateBookingData(data);
+
         if (hasErrors) {
+            console.error("Validation errors:", errors); 
             return NextResponse.json(errors, { status: 400 });
         }
 
-        const {  propertyId, checkinDate, checkoutDate, firstName, lastName, phone, email  } = data;
+        const {  propertyId, checkinDate, checkoutDate, firstName, lastName, phone, email, customerId  } = data;
+        console.log("Creating booking with customerId:", customerId);
+
         const property = await prisma.property.findUnique({ where: { id: propertyId } });
         if (!property) {
             return NextResponse.json({ message: "Property not found" }, { status: 404 });
         }
 
-        const totalPrice = (new Date(checkoutDate).getTime() - new Date(checkinDate).getTime()) / (1000 * 3600 * 24) * property.pricePerNight;
+        const numberOfNights = (new Date(checkoutDate).getTime() - new Date(checkinDate).getTime()) / (1000 * 3600 * 24);
+        const totalPrice = numberOfNights * property.pricePerNight;
 
         const newBooking = await prisma.booking.create({
             data: {
@@ -43,6 +49,7 @@ export async function POST(request: NextRequest) {
                 email,
                 propertyId,
                 createdById: data.createdById,
+                customerId,
             },
         });
 

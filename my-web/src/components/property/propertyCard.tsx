@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './style/card.css'
+import BookingForm from '../booking/bookingForm';
 
 const propertyCard: React.FC<{ onEdit: (property: any) => void; userId: string | null; isAdmin: boolean }> = ({ onEdit, userId, isAdmin }) => {
     
@@ -9,11 +10,12 @@ const propertyCard: React.FC<{ onEdit: (property: any) => void; userId: string |
     const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isBookingFormOpen, setIsBookingFormOpen] = useState(false);
 
 
     useEffect(() => {
         const token = localStorage.getItem("@library/token");
-        setIsAuthenticated(!!token); // Boolean check for authentication
+        setIsAuthenticated(!!token); 
     }, []);
     
     const fetchProperties = async () => {
@@ -31,7 +33,6 @@ const propertyCard: React.FC<{ onEdit: (property: any) => void; userId: string |
 
             const data = await response.json();
             setProperties(data);
-            console.log("Fetched properties:", data); 
         } catch (error) {
             console.error("Error fetching properties:", error);
         }
@@ -51,6 +52,7 @@ const propertyCard: React.FC<{ onEdit: (property: any) => void; userId: string |
         console.log("Closing property modal");
         setSelectedProperty(null);
         setIsModalOpen(false);
+        setIsBookingFormOpen(false); 
     };
 
     const handleDelete = async (propertyId: string, createdById: string) => {
@@ -82,6 +84,15 @@ const propertyCard: React.FC<{ onEdit: (property: any) => void; userId: string |
             }
         }
     };
+
+    const handleOpenBookingForm = () => {
+        setIsBookingFormOpen(true);
+    };
+
+    const handleBookingSuccess = () => {
+        alert("Booking confirmed!"); 
+        closeModal();
+    };
     
     return (
         <div className="property-card-container">
@@ -107,8 +118,8 @@ const propertyCard: React.FC<{ onEdit: (property: any) => void; userId: string |
                 <div className="modal" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <span className="close" onClick={closeModal}>&times;</span>
+                        <h3 style={{ fontWeight: 'bolder' }}>{selectedProperty.name}</h3>
                         <img src={selectedProperty.imageURL} alt={selectedProperty.name} className="modal-image" />
-                        <h3>{selectedProperty.name}</h3>
                         <p>{selectedProperty.description}</p>
                         <p>Location: {selectedProperty.location}</p>
                         <p>Price: ${selectedProperty.pricePerNight} per night</p>
@@ -134,6 +145,19 @@ const propertyCard: React.FC<{ onEdit: (property: any) => void; userId: string |
                                     Delete
                                 </button>
                             </>
+                        )}
+                        {isAuthenticated && !isAdmin && (
+                        <button onClick={handleOpenBookingForm} className="book-button">
+                            Book Now
+                        </button>
+                    )}
+
+                        {isBookingFormOpen && (
+                            <BookingForm
+                                propertyId={selectedProperty.id}
+                                onClose={closeModal}
+                                onBookingSuccess={handleBookingSuccess}
+                            />
                         )}
                     </div>
                 </div>

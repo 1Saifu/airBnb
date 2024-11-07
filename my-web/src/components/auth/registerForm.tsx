@@ -25,7 +25,18 @@ const registerForm: React.FC = () => {
             const data = await response.json();
     
             if (response.ok) {
+                console.log("New registered user:", data);
+
                 LocalStorageKit.set('@library/token', data.token);
+                LocalStorageKit.set('@library/userId', data.userId);
+                LocalStorageKit.set("@library/customerId", data.userId);
+                LocalStorageKit.set('@library/isAdmin', JSON.stringify(data.isAdmin)); 
+
+
+                console.log('Token stored:', data.token); 
+                console.log('User ID stored:', data.userId);
+                console.log('Customer ID stored:', data.userId);
+
                 router.push('/');
             } else {
                 console.error(data.message);

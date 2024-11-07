@@ -1,4 +1,4 @@
-export type LocalStorageKey = "@library/token" | "@library/userId" | "@library/isAdmin";
+export type LocalStorageKey = "@library/token" | "@library/userId" | "@library/isAdmin" | "@library/customerId";
 
 class LocalStorageKit {
   static set(key: LocalStorageKey, data: any) {
