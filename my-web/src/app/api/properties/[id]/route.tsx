@@ -36,7 +36,15 @@ export async function DELETE(request: NextRequest) {
     }
 
     try {
-        await prisma.property.delete({ where: { id } });
+
+        await prisma.booking.deleteMany({
+            where: { propertyId: id },
+        });
+
+        await prisma.property.delete({ 
+            where: { id } 
+        });
+
         return NextResponse.json({ message: "Property deleted successfully" });
     } catch (error: any) {
         console.error("Error deleting property:", error.message);
